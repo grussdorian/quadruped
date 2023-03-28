@@ -57,7 +57,7 @@ The [Gerber files](https://github.com/stanfordroboticsclub/Pupper-Raspi-PDB/) co
 
 Pupper has 4 legs, each with 3 sets of [servos](https://robokits.co.in/motors/rc-servo-motor/ultra-torque-metal-gear-35kgcm-coreless-stainless-steel-pinion-standard-servo-motor). These servos are placed inside 3D printed hip joints.
 
-### All reference images are placed under folder [3D printed files](/img)
+### All reference images are placed under folder [img](/img)
 
 ![Servo placement and numbering](/img/body7com.jpg)
 
