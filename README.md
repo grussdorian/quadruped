@@ -9,9 +9,9 @@
 
 Please refer to [This spreadsheet](https://docs.google.com/spreadsheets/d/1AzzCM8UDrbhDfgtIsiQplI5SMlo7OLG8/edit#gid=1202520655). Part sourcing is listed here comprehensively.
 
-For building the qudruped's body and legs, we have used 5mm fibre sheets. Ideally it should be carbon fibre. But we could not find a vendor who could cut the carbon fibre sheets according to our specifications. Also laser cutting of carbon fibre is not possible in the lab. The next best choice was to use acrylic fibre and that is what we used. $3$ mm thickness for legs and $5$ mm thickness for the base and top.
+For building the quadruped's body and legs, we have used 5mm fibre sheets. Ideally it should be carbon fibre. But we could not find a vendor who could cut the carbon fibre sheets according to our specifications. Also laser cutting of carbon fibre is not possible in the lab. The next best choice was to use acrylic fibre and that is what we used. $3$ mm thickness for legs and $5$ mm thickness for the base and top.
 
-All the strucural elements are taken from [here](https://a360.co/2TEh4gQ)
+All the structural elements are taken from [here](https://a360.co/2TEh4gQ)
 [![Pupper](/img/Pupper.png "Codey the Codecademy mascot")](https://stanford195.autodesk360.com/g/shares/SH919a0QTf3c32634dcfedf61e031f673710)
 
 ### Laser Cut parts
@@ -25,7 +25,7 @@ All the strucural elements are taken from [here](https://a360.co/2TEh4gQ)
 
 To obtain the design of the above parts, we extracted each of the above mentioned prefab from the fusion 360 model. For laser cutting, we had to project the legs, and the base on a 2d surface in fusion, and extract the traces. Then we used laser cad for some final retouching.
 
-_Note:_ The design provided here has two holes in the upper legs, both of them are useless as they do not fit our servo horn. So we had to modify the position of the hole in laser CAD to be $0.85$ mm from the begenning of the curvature.
+_Note:_ The design provided here has two holes in the upper legs, both of them are useless as they do not fit our servo horn. So we had to modify the position of the hole in laser CAD to be $0.85$ mm from the beginning of the curvature.
 
 ![Upper Leg](/img/Upper%20leg.png)
 
@@ -75,7 +75,8 @@ All the servos should be housed inside hip joints in the following way:
 
 _Choice of the screw is important. The horn should be facing away from the 4 spacers and should be able to rotate freely without any obstruction. So the screws should be tightened upto that extent only which does not cause any obstruction in the horn's way_
 
-5. Place the other set of 20mm spacers on the screws fasteneded onthe sid eof the plastic case, i.e they do not tighten the servo.
+5. Place the other set of 20mm spacers on the screws fastened on the sideof the plastic case, i.e they do not tighten the servo.
+
    Then the plastic disc that came with the servos should be attached ring side facing up, to $J5,J2,J8,J11$ along with 25T servo horn beneath the disc (which came with the servos as well).
 
 _The disc is used to create spacing for the legs. It makes sure that the legs don't slip while rotating._
@@ -84,7 +85,7 @@ _The disc is used to create spacing for the legs. It makes sure that the legs do
 
 ### Leg assembly
 
-Take the laser cut parts, upper legs and lower legs and place a thrust bearing between the two joints, and another bearing to the side of the screw head. The flat end of the lower leg should touch the ground and the lower leg should be facing outwards, away from the body. Place a m3x16 screw between the sandwitched joints and tighten a nilon locknut from the other end. This way prepare all the 4 legs.
+Take the laser cut parts, upper legs and lower legs and place a thrust bearing between the two joints, and another bearing to the side of the screw head. The flat end of the lower leg should touch the ground and the lower leg should be facing outwards, away from the body. Place a m3x16 screw between the sandwitched joints and tighten a nylon locknut from the other end. This way prepare all the 4 legs.
 
 ![hip6](/img/hip6preright.jpg)
 
@@ -122,7 +123,7 @@ $$
   brown \rightarrow ground
 $$
 
-All the servos should be connected to the [PCB](https://github.com/stanfordroboticsclub/Pupper-Raspi-PDB/), whcich is connected to the Raspberry Pi. The PCB is well marked and the signal side of the connector should face the GPIO headers.
+All the servos should be connected to the [PCB](https://github.com/stanfordroboticsclub/Pupper-Raspi-PDB/), which is connected to the Raspberry Pi. The PCB is well marked and the signal side of the connector should face the GPIO headers.
 
 ![Connection](/img/body7pre.jpg)
 The pigtail connector (Big wire on the right) is connected to the battery powering 7.4 volts and that power is converted to 5 volts using a voltage converter on the left. The output of the voltage converter _should_ be 5 Volts which directly plugs in our PCB where it is marked +5 volts and ground.
@@ -132,7 +133,7 @@ The pigtail connector (Big wire on the right) is connected to the battery poweri
 Never try to power the RPi with anything less than 4.75 volts and 5.25 volts. This was the mistake which costed us our Raspberry Pi 3 model B plus.
 I tested the output of the voltage converter, which showed 5 volts and I powered on the Raspberry Pi. It turned on and I SSHed into the Pi. Tested one servo and it was all good. Then I turned off the RPi using shutdown command from SSH.
 
-However next time before turning on the RPi I did not check the voltage and it didn't turn on. I quickly unplugged the battery and then disconnected the board. Later when I was testing the voltage converter seperately, the output of the voltage converter was same as the input with some voltage drop i.e it was showing 6.8 volts!
+However next time before turning on the RPi I did not check the voltage and it didn't turn on. I quickly unplugged the battery and then disconnected the board. Later when I was testing the voltage converter separately, the output of the voltage converter was same as the input with some voltage drop i.e it was showing 6.8 volts!
 
 Assuming our worst fear, I waited for another day and checked online forums whether the RPi has polyfuse or not. It turns out that the Raspberry Pi has polyfuse, but they are placed between the input and the SOC so the GPIO side where we plugged in our power supply had no protection.
 
@@ -142,18 +143,18 @@ I double checked all the [testing points](https://ozzmaker.com/testing-points-ra
 
 ## 4. Code
 
-Code for the quadruped has been taken from the open source project by stanford robotics group [here](https://github.com/stanfordroboticsclub/StanfordQuadruped) and the joystick controller code has been taken from [here](https://github.com/stanfordroboticsclub/PS4Joystick). The code is very well documented and self explainatory but it had an [issue](#added-wireddongle-controller-support)
+Code for the quadruped has been taken from the open source project by Stanford robotics group [here](https://github.com/stanfordroboticsclub/StanfordQuadruped) and the joystick controller code has been taken from [here](https://github.com/stanfordroboticsclub/PS4Joystick). The code is very well documented and self explanatory but it had an [issue](#added-wireddongle-controller-support)
 
 I did not use the image they provided for flashing the SD card. The image is way to old and I faced many problems while updating repositories. Thus I ended up using a standard 32 bit distribution of [Raspbian](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit).
 
-After etching the sd card with [Raspberry Pi's image software](https://www.raspberrypi.com/software/) I booted into the Pi.
+After etching the SD card with [Raspberry Pi's image software](https://www.raspberrypi.com/software/) I booted into the Pi.
 
 Raspbian provides a GUI so our job was easier. Later the plan was to remove the Desktop Environment and only keep the CLI to reduce system overhead.
 With the pi connected to USB mouse, keyboard and a display, we set up wifi on the pi so we could use it in headless mode in the future. All successive accesses were made using VNC or SSH. And the pi was only connected to power using a wall adapter which supported 3A 5V.
 
 ### Added wired/dongle controller support
 
-The default code They provided had only support for a PS4 dualshock controller. And not only that, the internal code for the working of the robot, is also very much intertwined with the proprietary code it shipped with. Thus I had to rewrite the code to add support for wired / standard bluetooth controller with a dongle like the logitech f710 controller we used. ![controller](/img/controller.jpg)
+The default code They provided had only support for a PS4 Dualshock controller. And not only that, the internal code for the working of the robot, is also very much intertwined with the proprietary code it shipped with. Thus I had to rewrite the code to add support for wired / standard bluetooth controller with a dongle like the Logitech f710 controller we used. ![controller](/img/controller.jpg)
 
 The modified code is [here](https://github.com/grussdorian/PupperCommand) and [here](https://github.com/grussdorian/pupper)
 
