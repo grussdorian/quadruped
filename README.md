@@ -3,7 +3,7 @@
 1. [Parts sourcing](#1-parts-sourcing)
 2. [Assembly](#2-assembly)
 3. [Connections](#3-connections)
-4. [Code](#4-connections)
+4. [Code](#4-code)
 
 ## 1. Parts sourcing.
 
