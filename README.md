@@ -4,6 +4,7 @@
 2. [Assembly](#2-assembly)
 3. [Connections](#3-connections)
 4. [Code](#4-code)
+5. [Calibration](#5-calibration)
 
 ## 1. Parts sourcing.
 
@@ -183,3 +184,44 @@ Then the UDP connection objects that were communicating with the controller were
 
 The connection to the controller part has been completely re-written. It still uses UDP but the events fired by the UDP publisher object is interrupt driven (from the usb). Thus, this is more efficient in terms of polling in regular intervals (which dualshock 4 was doing). The only caveat is now the publisher has to publish in two different ports, one for activating the robot and another for driving the robot, while the first one listens for shutdown command.
 This is a quick way of doing things but I will soon change the code to only publish to one port.
+
+## 5. Calibration
+
+To run the calibration code, first stop the `robot.service` and start `calibrate_servos.py`.
+The pulse width for our servos is as follows:
+
+By following the datasheet of our servo, which says
+
+`max_pulse_width = 2500` $\mu$ seconds
+
+`min_pulse_width = 500` $\mu$ seconds
+
+Thus entire range of pulse width lies $\in$ [2500,500]
+So the width of the pulse is $2500-500=2000 \mu$ seconds
+
+And the maximum allowed rotation electrically is $180\degree$
+
+Thus pulse width for rotating $1\degree$ is
+
+$$
+\frac{2500-500\mu sec}{180\degree} = 11.111 \mu sec
+$$
+
+By default the values provided was $11.333 \mu sec$ which we have to override in `calibrate_servos.py`
+
+Final calibration matrix is as follows. Note these values are not the final values and are subject to change as we continue to improve the design.
+
+| Servo name | Offset Angle | Final angle |
+| ---------- | ------------ | ----------- |
+| J1         | -34          | 79          |
+| J2         | -38          | 83          |
+| J3         | 35           | -85         |
+| J4         | -40          | 40          |
+| J5         | -41          | 86          |
+| J6         | 30           | -75         |
+| J7         | -44          | 44          |
+| J8         | -49          | 94          |
+| J9         | 38           | -83         |
+| J10        | -48          | 48          |
+| J11        | -46          | 91          |
+| J12        | 36           | -81         |
