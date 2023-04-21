@@ -5,6 +5,8 @@
 3. [Connections](#3-connections)
 4. [Code](#4-code)
 5. [Calibration](#5-calibration)
+6. [Calibration](#6-running-the-robot)
+7. [Calibration](#7-controlling)
 
 ## 1. Parts sourcing.
 
@@ -199,8 +201,8 @@ To do this, first we need to plug in the servo individually to the PCB and power
 i.e
 
 ```console
-pupper@~/ cd servo_code/quadruped/servo_code/
-pupper@~/servo_code/quadruped/servo_code/ python3 move_to_zero.py min
+pupper@pupper cd servo_code/quadruped/servo_code/
+pupper@pupper/servo_code/quadruped/servo_code/ python3 move_to_zero.py min
 ```
 
 would move the servo which is currently being selected in the code.
@@ -224,7 +226,7 @@ servo_J10 = Servo(J10, min_pulse_width=MIN_PULSE_WIDTH,
 Then run the code:
 
 ```console
-pupper@~/servo_code/quadruped/servo_code/ python3 move_to_zero.py min
+pupper@pupper/servo_code/quadruped/servo_code/ python3 move_to_zero.py min
 ```
 
 To move the servo to its min position. Accordingly place the hip joints **only after making sure that there is no obstruction**
@@ -285,21 +287,21 @@ Final calibration matrix is as follows. Note these values are not the final valu
 Before starting the robot, we need to make sure that the service `joystick.service` is running. This service is an instance of the python code `Joystick.py` in the folder `Pupper Command`. The code is used to interface the joystick with the robot. To check whether it is already running
 
 ```console
-pupper@~/ sudo systemctl status joystick.service
+pupper@pupper sudo systemctl status joystick.service
 ```
 
 If the service is not running, run it using the command
 
 ```console
-pupper@~/ sudo systemctl start joystick.service
+pupper@pupper sudo systemctl start joystick.service
 ```
 
 To run the robot using the controller
 
 ```console
-pupper@~/ sudo pigpiod
-pupper@~/ cd StanfordQuadruped/
-pupper@~/StanfordQuadruped/ python3 run_robot.py
+pupper@pupper sudo pigpiod
+pupper@pupper cd StanfordQuadruped/
+pupper@pupper/StanfordQuadruped/ python3 run_robot.py
 ```
 
 The file `run_robot.py` is the entry point for starting the robot.
@@ -318,19 +320,19 @@ If the command `sudo pigpiod` is issued more than once, the shell will prompt an
 First check whether the service is already running
 
 ```console
-pupper@~/StanfordQuadruped/ sudo systemctl status robot.service
+pupper@pupper/StanfordQuadruped/ sudo systemctl status robot.service
 ```
 
 Stop the service if it is already running
 
 ```console
-pupper@~/StanfordQuadruped/ sudo systemctl stop robot.service
+pupper@pupper/StanfordQuadruped/ sudo systemctl stop robot.service
 ```
 
 Then run the code
 
 ```console
-pupper@~/StanfordQuadruped/ python3 run_robot.py
+pupper@pupper/StanfordQuadruped/ python3 run_robot.py
 ```
 
 ## 7. Controlling
