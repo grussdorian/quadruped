@@ -187,7 +187,61 @@ This is a quick way of doing things but I will soon change the code to only publ
 
 ## 5. Calibration
 
-To run the calibration code, first stop the `robot.service` and start `calibrate_servos.py`.
+To calibrate the servos, first we need to set the servo to its neutral position without the horns, then test whether they can move freely (whether addition of the horns would create an obstruction in the path of the servo).
+
+To do this, first we need to plug in the servo individually to the PCB and power on the Raspberry Pi. If `robot.service` is running, first stop it by `sudo systemctl stop robot.service`. Then cd to the directory `servo_code/quadruped/servo_code/` and modify the file `move_to_zero.py` with the servo which we are currently trying to move.
+
+`move_to_zero.py` Takes two command line arguments:-
+
+1. min
+2. max
+
+i.e
+
+```console
+pupper@~/ cd servo_code/quadruped/servo_code/
+pupper@~/servo_code/quadruped/servo_code/ python3 move_to_zero.py min
+```
+
+would move the servo which is currently being selected in the code.
+
+Change the part of the code as:
+
+```python
+servo_JXX = Servo(JXX, min_pulse_width=MIN_PULSE_WIDTH,
+                 max_pulse_width=MAX_PULSE_WIDTH, pin_factory=factory)
+```
+
+Change X with the number of servo you want to move to min or max
+
+i.e
+
+```python
+servo_J10 = Servo(J10, min_pulse_width=MIN_PULSE_WIDTH,
+                 max_pulse_width=MAX_PULSE_WIDTH, pin_factory=factory)
+```
+
+Then run the code:
+
+```console
+pupper@~/servo_code/quadruped/servo_code/ python3 move_to_zero.py min
+```
+
+To move the servo to its min position. Accordingly place the hip joints **only after making sure that there is no obstruction**
+
+**Note if the horn gets stuck, it can potentially damage the servo and widen the dead-zone for the servo. (Which means without putting any load on the servo, it would wobble every so slightly. This wobble might increase when the horn is stuck and the servo is trying its best to push it against the metal standoffs, acrylic body or the plastic frame)**
+
+The correct alignment of the horns is as follows:
+
+![controller](/img/zero_position_alignment_servo_horn.png)
+
+Note that the horns are just barely touching the metal standoffs. For the inner hip (servo behind) the horn is at its max. The servo in the front is at its min. This position is chosen such that when the leg tries to adjust every time when the following calibration code is run, or when the robot is [activated using the controller](#6-running-the-robot), the default position is such that nothing gets obstructed.
+
+Earlier the horns were vertical, which was creating obstruction when the robot was [being activated](#6-running-the-robot). It had to be taken to the walking position as soon as possible.
+
+### To run the calibration code
+
+First, stop the `robot.service` and start `calibrate_servos.py`.
 The pulse width for our servos is as follows:
 
 By following the datasheet of our servo, which says
@@ -225,3 +279,72 @@ Final calibration matrix is as follows. Note these values are not the final valu
 | J10        | -48          | 48          |
 | J11        | -46          | 91          |
 | J12        | 36           | -81         |
+
+## 6. Running the robot
+
+Before starting the robot, we need to make sure that the service `joystick.service` is running. This service is an instance of the python code `Joystick.py` in the folder `Pupper Command`. The code is used to interface the joystick with the robot. To check whether it is already running
+
+```console
+pupper@~/ sudo systemctl status joystick.service
+```
+
+If the service is not running, run it using the command
+
+```console
+pupper@~/ sudo systemctl start joystick.service
+```
+
+To run the robot using the controller
+
+```console
+pupper@~/ sudo pigpiod
+pupper@~/ cd StanfordQuadruped/
+pupper@~/StanfordQuadruped/ python3 run_robot.py
+```
+
+The file `run_robot.py` is the entry point for starting the robot.
+By default, there is a service `robot.service` located in the root of the project folder which directs the shell environment to run the python command run_robot.py using python3.
+
+### Jittering and GPIO daemon
+
+The service also directs the shell environment to activate Raspberry Pi's GPIO pins prior to activating the robot by running the command `sudo pigpiod` to activate the Pi's GPIO daemon service. Without this command being issued in the first place `run_robot.py` can not run. Thus when we are manually starting the robot we need to make sure that the GPIO daemon is running and the command is activated exactly once.
+
+If the command `sudo pigpiod` is issued more than once, the shell will prompt an error that a shared resource is being used by multiple processes. This will cause cause a race condition and wrong pwm signals will be delivered to the GPIO pins. **Thus to stop the jittering** we need to restart the Raspberry Pi.
+
+**NOTE:** The service `robot.service` runs the command `sudo pigpiod` once before the service starts. Thus if the service is running, there is nothing else we have to do. Just press `L1 (or LB)` on the controller to activate the robot. The logs of the program will be visible in the service logs by `sudo systemctl status robot.service`.
+
+**But** if we want to run the robot manually, first we need to stop `robot.service`
+
+First check whether the service is already running
+
+```console
+pupper@~/StanfordQuadruped/ sudo systemctl status robot.service
+```
+
+Stop the service if it is already running
+
+```console
+pupper@~/StanfordQuadruped/ sudo systemctl stop robot.service
+```
+
+Then run the code
+
+```console
+pupper@~/StanfordQuadruped/ python3 run_robot.py
+```
+
+## 7. Controlling
+
+After the robot is activated using `L1 (or LB)` one can run the robot.
+Make sure the controller is in X-input mode and the mode button on the controller is not lit up.
+You can debug the commands from the controller on the screen, `run_robot.py` logs all the commands that are being sent from the controller.
+If the light on the mode button is on, that means the analog sticks are emulating the d-pad buttons. Thus only discrete value of `1` and `-1` are obtained by the program.
+
+### Pupper can transition to 3 modes.
+
+1. Standing
+2. Squating
+3. Normal
+
+Cycle among each of these modes by pressing the `A (green)` button on the controller. When the robot is in normal mode, press `R1 (or RB)` to activate walking mode. This would allow the controller to control pupper using the analog sticks. Left analog stick can be used to move it forwards or backwards.
+Press `R1 (or RB)` once more to reset to normal mode. Here one can set the heights of the joints and legs by pressing `X`, `B` or `Y` buttons on the controller. Pupper can also sit by lowering its lower legs and straightening its front legs.
