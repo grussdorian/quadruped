@@ -5,8 +5,10 @@
 3. [Connections](#3-connections)
 4. [Code](#4-code)
 5. [Calibration](#5-calibration)
-6. [Calibration](#6-running-the-robot)
-7. [Calibration](#7-controlling)
+6. [Running the robot](#6-running-the-robot)
+7. [Controlling](#7-controlling)
+8. [Things which are still left](#8-things-to-do)
+9. [Checklist of things before connecting the PCB to the RPi](#9-checklist-of-things-which-are-needed-before-connecting-the-pcb-to-the-raspberry-pi)
 
 ## 1. Parts sourcing.
 
@@ -28,7 +30,9 @@ All the structural elements are taken from [here](https://a360.co/2TEh4gQ)
 
 To obtain the design of the above parts, we extracted each of the above mentioned prefab from the fusion 360 model. For laser cutting, we had to project the legs, and the base on a 2d surface in fusion, and extract the traces. Then we used laser cad for some final retouching.
 
-_Note:_ The design provided here has two holes in the upper legs, both of them are useless as they do not fit our servo horn. So we had to modify the position of the hole in laser CAD to be $0.85$ mm from the beginning of the curvature.
+_Note:_ The design provided here has two holes in the upper legs, both of them are useless as they do not fit our servo horn. So we had to modify the position of the hole in laser CAD to be $0.85$ mm from the beginning of the curvature. **Update:** We have used mild steel to make the legs, as the acrylic legs could not handle the heavy weight of the robot
+
+_Update_ The design of the upper leg has been modified and now we are not using the plastic disc to prevent slipping. Instead we have prototyped (with acrylic) a leg with two holes which fit perfectly in the two holes of the leg. [We are going to laser cut it in aluminum.](#8-things-to-do)
 
 ![Upper Leg](/img/Upper%20leg.png)
 
@@ -54,7 +58,9 @@ After all the raw materials and parts are available, we can move to assembly
 ### PCB
 
 ![PCB](/img/pcb.png) required to power all the servos, provide signal from the Raspberry Pi. It sits on top of the GPIO pins of the Pi. It can also be used to power the Pi [something we messed up doing](#what-went-wrong).
-The [Gerber files](https://github.com/stanfordroboticsclub/Pupper-Raspi-PDB/) could be used to print the PCB using any standard PCB manufacturer. _NOTE_ 2 oz copper should be used for the traces.
+The [Gerber files](https://github.com/stanfordroboticsclub/Pupper-Raspi-PDB/) could be used to print the PCB using any standard PCB manufacturer. _NOTE_ 2 oz copper should be used for the traces. After getting the PCB, we need to solder the headers as shown in the image. Solder a pigtail connector wire in J13 to connect the battery. Make sure that the pigtail wire is joined above (side facing the male headers) the PCB. Solder the female $20\times2$ female header on the back side of the PCB.
+
+**Update** There was jittering, (i.e incorrect pwm signals) in for J3. So we had to cut out the header for the signal pin of J3 and attach a jumper wire from GPIO pin `20` to signal socket of J3 directly. In future PCBs This change is to be [incorporated](#8-things-to-do)
 
 ## 2. Assembly
 
@@ -345,8 +351,36 @@ If the light on the mode button is on, that means the analog sticks are emulatin
 ### Pupper can transition to 3 modes.
 
 1. Standing
-2. Squating
+2. Squatting
 3. Normal
 
 Cycle among each of these modes by pressing the `A (green)` button on the controller. When the robot is in normal mode, press `R1 (or RB)` to activate walking mode. This would allow the controller to control pupper using the analog sticks. Left analog stick can be used to move it forwards or backwards.
 Press `R1 (or RB)` once more to reset to normal mode. Here one can set the heights of the joints and legs by pressing `X`, `B` or `Y` buttons on the controller. Pupper can also sit by lowering its lower legs and straightening its front legs.
+
+## 8. Things to do
+
+1. Mount the battery to the bottom of the robot and fasten it with electrical tape and zip-ties.
+2. Test the buck converter whether proper 5 volts are coming on the output pins or not.
+3. Make an over-voltage protection circuit with zener diode.
+4. We have to recalibrate the robot after the aluminum legs arrive.
+5. We have to change the PCB design so the signal for J3 comes from GPIO pin `20`.
+
+## 9. Checklist of things which are needed before connecting the PCB to the raspberry pi.
+
+1.  Check all the pins from raspberry's GPIO by hooking them up with an oscilloscope and verifying whether the signals are correct or not. Use a female header to stab the PI's GPIO pin and take the male end of that wire and hook them to the oscilloscope. (Also take a ground pin out from the Pi for hooking the ground lead from the probe) For instance, for our servos, the period of the signal is $20$ _ms_ and lowest admitted duty cycle is $\frac{4}{20}$ _ms_. This should be verified for the entire range of permissible duty cycles for the servo's min and max positions.
+    In our case, we did not get a proper signal for GPIO pin `4` for servo J3, thus we changed the pin number to GPIO `20` and added a jumper wire from the same pin to J3's signal header.
+
+2.  Take the multimeter to short circuit testing mode, (a buzzer will make sound when the two leads of the meter are shorted).
+    Then probe
+
+        a. Each ground pin with every other pin and check whether those points which should be ground are shorted.
+
+        b. Each power pin with every other pin and check that no pin other than the pins meant to supply power are shorted or not
+
+        c. Each signal pin (where the servos plug in) and the Pi's header pins and test whether the signal pins are properly connected and whether any other pin is shorted with the signal pins.
+
+        d. Most importantly, check whether Vcc and Gnd are not shorted!
+
+This will make sure that all connections are proper and there is no harm to the components after connecting the PCB to the Raspberry Pi and powering it on.
+
+Power the raspberry Pi from the power bank. Later a buck converter and a protection circuit will also be used.
