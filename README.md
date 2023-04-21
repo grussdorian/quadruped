@@ -313,7 +313,7 @@ pupper@pupper/StanfordQuadruped/ python3 run_robot.py
 The file `run_robot.py` is the entry point for starting the robot.
 By default, there is a service `robot.service` located in the root of the project folder which directs the shell environment to run the python command run_robot.py using python3.
 
-### Jittering and GPIO daemon
+### Jittering and GPIO daemon (pun intended)
 
 The service also directs the shell environment to activate Raspberry Pi's GPIO pins prior to activating the robot by running the command `sudo pigpiod` to activate the Pi's GPIO daemon service. Without this command being issued in the first place `run_robot.py` can not run. Thus when we are manually starting the robot we need to make sure that the GPIO daemon is running and the command is activated exactly once.
 
