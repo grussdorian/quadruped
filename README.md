@@ -252,7 +252,7 @@ Earlier the horns were vertical, which was creating obstruction when the robot w
 First, stop the `robot.service` and start `calibrate_servos.py`.
 The pulse width for our servos is as follows:
 
-By following the datasheet of our servo, which says
+By following the [datasheet](https://github.com/microrobotics/DS3235-270/blob/master/DS3235-270_datasheet.pdf) of our servo, which says
 
 `max_pulse_width = 2500` $\mu$ seconds
 
