@@ -161,6 +161,8 @@ After etching the SD card with [Raspberry Pi's image software](https://www.raspb
 Raspbian provides a GUI so our job was easier. Later the plan was to remove the Desktop Environment and only keep the CLI to reduce system overhead.
 With the pi connected to USB mouse, keyboard and a display, we set up wifi on the pi so we could use it in headless mode in the future. All successive accesses were made using VNC or SSH. And the pi was only connected to power using a wall adapter which supported 3A 5V.
 
+**[Update]** Fixed a bug with the controller, forward and backward movements are now correctly oriented.
+
 ### Added wired/dongle controller support
 
 The default code They provided had only support for a PS4 Dualshock controller. And not only that, the internal code for the working of the robot, is also very much intertwined with the proprietary code it shipped with. Thus I had to rewrite the code to add support for wired / standard bluetooth controller with a dongle like the Logitech f710 controller we used. ![controller](/img/controller.jpg)
@@ -275,18 +277,19 @@ Final calibration matrix is as follows. Note these values are not the final valu
 
 | Servo name | Offset Angle | Final angle |
 | ---------- | ------------ | ----------- |
-| J1         | -34          | 79          |
-| J2         | -38          | 83          |
-| J3         | 35           | -85         |
-| J4         | -40          | 40          |
-| J5         | -41          | 86          |
-| J6         | 30           | -75         |
-| J7         | -44          | 44          |
-| J8         | -49          | 94          |
-| J9         | 38           | -83         |
-| J10        | -48          | 48          |
-| J11        | -46          | 91          |
-| J12        | 36           | -81         |
+| J1         | -36          | 36          |
+| J2         | -64          | 109         |
+| J3         |  34          | -79         |
+| J4         | -37          | 37          |
+| J5         |  41          | 114         |
+| J6         |  35          | -80         |
+| J7         | -41          | 41          |
+| J8         | -65          | 110         |
+| J9         |  40          | -85         |
+| J10        | -50          | 50          |
+| J11        | -63          | 108         |
+| J12        |  37          | -82         |
+
 
 ## 6. Running the robot
 
@@ -313,7 +316,7 @@ pupper@pupper/StanfordQuadruped/ python3 run_robot.py
 The file `run_robot.py` is the entry point for starting the robot.
 By default, there is a service `robot.service` located in the root of the project folder which directs the shell environment to run the python command run_robot.py using python3.
 
-### Jittering and GPIO daemon (pun intended)
+### Jittering and the daemon of GPIO (pun intended)
 
 The service also directs the shell environment to activate Raspberry Pi's GPIO pins prior to activating the robot by running the command `sudo pigpiod` to activate the Pi's GPIO daemon service. Without this command being issued in the first place `run_robot.py` can not run. Thus when we are manually starting the robot we need to make sure that the GPIO daemon is running and the command is activated exactly once.
 
@@ -359,11 +362,13 @@ Press `R1 (or RB)` once more to reset to normal mode. Here one can set the heigh
 
 ## 8. Things to do
 
-1. Mount the battery to the bottom of the robot and fasten it with electrical tape and zip-ties.
+1. ✅ Mount the battery to the bottom of the robot and fasten it with electrical tape and zip-ties.
 2. Test the buck converter whether proper 5 volts are coming on the output pins or not.
-3. Make an over-voltage protection circuit with zener diode.
-4. We have to recalibrate the robot after the aluminum legs arrive.
+3. Make an over-voltage protection circuit with Zener diode.
+4. ✅ We have to recalibrate the robot after the aluminum legs arrive.
 5. We have to change the PCB design so the signal for J3 comes from GPIO pin `20`.
+6. We need to replace the screws in the legs with longer screws.
+7. Think about adding a support to the cantilever structure of the inner servos.
 
 ## 9. Checklist of things which are needed before connecting the PCB to the raspberry pi.
 
