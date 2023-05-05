@@ -279,17 +279,16 @@ Final calibration matrix is as follows. Note these values are not the final valu
 | ---------- | ------------ | ----------- |
 | J1         | -36          | 36          |
 | J2         | -64          | 109         |
-| J3         |  34          | -79         |
+| J3         | 34           | -79         |
 | J4         | -37          | 37          |
-| J5         |  41          | 114         |
-| J6         |  35          | -80         |
+| J5         | 41           | 114         |
+| J6         | 35           | -80         |
 | J7         | -41          | 41          |
 | J8         | -65          | 110         |
-| J9         |  40          | -85         |
+| J9         | 40           | -85         |
 | J10        | -50          | 50          |
 | J11        | -63          | 108         |
-| J12        |  37          | -82         |
-
+| J12        | 37           | -82         |
 
 ## 6. Running the robot
 
@@ -363,12 +362,12 @@ Press `R1 (or RB)` once more to reset to normal mode. Here one can set the heigh
 ## 8. Things to do
 
 1. ✅ Mount the battery to the bottom of the robot and fasten it with electrical tape and zip-ties.
-2. Test the buck converter whether proper 5 volts are coming on the output pins or not.
+2. ✅ Test the buck converter whether proper 5 volts are coming on the output pins or not.
 3. Make an over-voltage protection circuit with Zener diode.
 4. ✅ We have to recalibrate the robot after the aluminum legs arrive.
 5. We have to change the PCB design so the signal for J3 comes from GPIO pin `20`.
-6. We need to replace the screws in the legs with longer screws.
-7. Think about adding a support to the cantilever structure of the inner servos.
+6. ✅ We need to replace the screws in the legs with longer screws.
+7. ✅ Think about adding a support to the cantilever structure of the inner servos.
 
 ## 9. Checklist of things which are needed before connecting the PCB to the raspberry pi.
 
