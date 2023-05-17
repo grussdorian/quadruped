@@ -30,11 +30,15 @@ All the structural elements are taken from [here](https://a360.co/2TEh4gQ)
 
 To obtain the design of the above parts, we extracted each of the above mentioned prefab from the fusion 360 model. For laser cutting, we had to project the legs, and the base on a 2d surface in fusion, and extract the traces. Then we used laser cad for some final retouching.
 
-_Note:_ The design provided here has two holes in the upper legs, both of them are useless as they do not fit our servo horn. So we had to modify the position of the hole in laser CAD to be $0.85$ mm from the beginning of the curvature. **Update:** We have used mild steel to make the legs, as the acrylic legs could not handle the heavy weight of the robot
+_Note:_ The design provided here has two holes in the upper legs, both of them are useless as they do not fit our servo horn. So we had to modify the position of the hole in laser CAD to be $0.85$ mm from the beginning of the curvature. **[Update]** We have used mild steel to make the legs, as the acrylic legs could not handle the heavy weight of the robot
 
-_Update_ The design of the upper leg has been modified and now we are not using the plastic disc to prevent slipping. Instead we have prototyped (with acrylic) a leg with two holes which fit perfectly in the two holes of the leg. [We are going to laser cut it in aluminum.](#8-things-to-do)
+**[Update]** The design of the upper leg has been modified and now we are not using the plastic disc to prevent slipping. Instead we have prototyped (with acrylic) a leg with two holes which fit perfectly in the two holes of the leg. [We are going to laser cut it in aluminum.](#8-things-to-do)
 
 ![Upper Leg](/img/Upper%20leg.png)
+
+**[Update]** The design of the upper leg has once again been modified. This time there is no disc attached to the upper leg. Instead the concave shape of the upper leg has been changed to a convex shape, with two M3 screw holes. Thus the need for adding a disc has been eliminated.
+
+![Upper Leg](/img/upper_leg_v3.png)
 
 ### 3D printed parts
 
@@ -60,7 +64,7 @@ After all the raw materials and parts are available, we can move to assembly
 ![PCB](/img/pcb.png) required to power all the servos, provide signal from the Raspberry Pi. It sits on top of the GPIO pins of the Pi. It can also be used to power the Pi [something we messed up doing](#what-went-wrong).
 The [Gerber files](https://github.com/stanfordroboticsclub/Pupper-Raspi-PDB/) could be used to print the PCB using any standard PCB manufacturer. _NOTE_ 2 oz copper should be used for the traces. After getting the PCB, we need to solder the headers as shown in the image. Solder a pigtail connector wire in J13 to connect the battery. Make sure that the pigtail wire is joined above (side facing the male headers) the PCB. Solder the female $20\times2$ female header on the back side of the PCB.
 
-**Update** There was jittering, (i.e incorrect pwm signals) in for J3. So we had to cut out the header for the signal pin of J3 and attach a jumper wire from GPIO pin `20` to signal socket of J3 directly. In future PCBs This change is to be [incorporated](#8-things-to-do)
+**[Update]** There was jittering, (i.e incorrect pwm signals) in for J3. So we had to cut out the header for the signal pin of J3 and attach a jumper wire from GPIO pin `20` to signal socket of J3 directly. In future PCBs This change is to be [incorporated](#8-things-to-do)
 
 ## 2. Assembly
 
@@ -315,7 +319,7 @@ pupper@pupper/StanfordQuadruped/ python3 run_robot.py
 The file `run_robot.py` is the entry point for starting the robot.
 By default, there is a service `robot.service` located in the root of the project folder which directs the shell environment to run the python command run_robot.py using python3.
 
-### Jittering and the daemon of GPIO (pun intended)
+### Jittering and GPIO daemon
 
 The service also directs the shell environment to activate Raspberry Pi's GPIO pins prior to activating the robot by running the command `sudo pigpiod` to activate the Pi's GPIO daemon service. Without this command being issued in the first place `run_robot.py` can not run. Thus when we are manually starting the robot we need to make sure that the GPIO daemon is running and the command is activated exactly once.
 
@@ -359,15 +363,15 @@ If the light on the mode button is on, that means the analog sticks are emulatin
 Cycle among each of these modes by pressing the `A (green)` button on the controller. When the robot is in normal mode, press `R1 (or RB)` to activate walking mode. This would allow the controller to control pupper using the analog sticks. Left analog stick can be used to move it forwards or backwards.
 Press `R1 (or RB)` once more to reset to normal mode. Here one can set the heights of the joints and legs by pressing `X`, `B` or `Y` buttons on the controller. Pupper can also sit by lowering its lower legs and straightening its front legs.
 
-## 8. Things to do
+## 8. Checklist of things we did
 
-1. ✅ Mount the battery to the bottom of the robot and fasten it with electrical tape and zip-ties.
-2. ✅ Test the buck converter whether proper 5 volts are coming on the output pins or not.
+1. Mount the battery to the bottom of the robot and fasten it with electrical tape and zip-ties.
+2. Test the buck converter whether proper 5 volts are coming on the output pins or not.
 3. Make an over-voltage protection circuit with Zener diode.
-4. ✅ We have to recalibrate the robot after the aluminum legs arrive.
+4. We have to recalibrate the robot after the aluminum legs arrive.
 5. We have to change the PCB design so the signal for J3 comes from GPIO pin `20`.
-6. ✅ We need to replace the screws in the legs with longer screws.
-7. ✅ Think about adding a support to the cantilever structure of the inner servos.
+6. We need to replace the screws in the legs with longer screws.
+7. Think about adding a support to the cantilever structure of the inner servos.
 
 ## 9. Checklist of things which are needed before connecting the PCB to the raspberry pi.
 
