@@ -1,3 +1,11 @@
+# Final presentation video
+[Part 1](https://youtu.be/GLVumrYQS3o)
+[Part 2](https://youtu.be/F0bNzEO_wMU))
+
+# Final Paper link
+
+[A Framework for Seamless Trajectory Estimation and Navigation of Robotic Sensor Platform with Resource-Constrained Embedded Controller](https://ieeexplore.ieee.org/abstract/document/10324982)
+
 # Documentation for Pupper
 
 1. [Parts sourcing](#1-parts-sourcing)
