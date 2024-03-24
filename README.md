@@ -1,6 +1,6 @@
 # Final presentation video
 [Part 1](https://youtu.be/GLVumrYQS3o)
-[Part 2](https://youtu.be/F0bNzEO_wMU))
+[Part 2](https://youtu.be/F0bNzEO_wMU)
 
 # Final Paper link
 
